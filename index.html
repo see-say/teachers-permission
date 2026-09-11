@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تطبيق استئذان المعلمات</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .form-container {
+            background-color: #ffffff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 450px;
+        }
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        label {
+            font-weight: bold;
+            color: #34495e;
+            display: block;
+            margin-top: 12px;
+            margin-bottom: 5px;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        button {
+            width: 100%;
+            background-color: #25D366;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background-color: #1da851;
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h2>منصة استئذان المعلمات</h2>
+    <form id="permissionForm">
+        <label for="teacherName">اسم المعلمة:</label>
+        <input type="text" id="teacherName" required placeholder="أدخلي الاسم الثلاثي">
+
+        <label for="jobId">الرقم الوظيفي:</label>
+        <input type="text" id="jobId" required placeholder="أدخلي الرقم الوظيفي">
+
+        <label for="leaveDate">تاريخ الاستئذان:</label>
+        <input type="date" id="leaveDate" required>
+
+        <label for="leaveTime">ساعة الاستئذان:</label>
+        <input type="time" id="leaveTime" required>
+
+        <label for="leaveType">نوع الاستئذان:</label>
+        <select id="leaveType" required>
+            <option value="استئذان مؤقت">استئذان مؤقت</option>
+            <option value="بصمة خروج">بصمة خروج</option>
+        </select>
+
+        <label for="reason">سبب الاستئذان:</label>
+        <textarea id="reason" rows="3" required placeholder="اكتبي سبب الاستئذان..."></textarea>
+
+        <button type="button" onclick="sendToWhatsApp()">إرسال طلب الاستئذان عبر الواتساب</button>
+    </form>
+</div>
+
+<script>
+function sendToWhatsApp() {
+    const name = document.getElementById('teacherName').value;
+    const jobId = document.getElementById('jobId').value;
+    const date = document.getElementById('leaveDate').value;
+    const time = document.getElementById('leaveTime').value;
+    const type = document.getElementById('leaveType').value;
+    const reason = document.getElementById('reason').value;
+
+    if (!name || !jobId || !date || !time || !reason) {
+        alert('يرجى ملء جميع الحقول المطلوبة');
+        return;
+    }
+
+    const managerPhone = "96895743707";
+    
+    const message = `*طلب استئذان جديد*%0A` +
+                    `-----------------------%0A` +
+                    `*اسم المعلمة:* ${encodeURIComponent(name)}%0A` +
+                    `*الرقم الوظيفي:* ${encodeURIComponent(jobId)}%0A` +
+                    `*نوع الاستئذان:* ${encodeURIComponent(type)}%0A` +
+                    `*التاريخ:* ${encodeURIComponent(date)}%0A` +
+                    `*الوقت:* ${encodeURIComponent(time)}%0A` +
+                    `*السبب:* ${encodeURIComponent(reason)}`;
+
+    const whatsappUrl = `https://wa.me/${managerPhone}?text=${message}`;
+    
+    window.open(whatsappUrl, '_blank');
+}
+</script>
+
+</body>
+</html>
